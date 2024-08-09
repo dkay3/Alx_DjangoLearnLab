@@ -1,5 +1,5 @@
 # Import the Book model
-from your_app_name.models import Book
+from bookshelf.models import Book
 
 # Retrieve the Book instance you created
 book = Book.objects.get(title="1984", author="George Orwell", publication_year=1949)

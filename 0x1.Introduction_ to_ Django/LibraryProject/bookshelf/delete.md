@@ -1,11 +1,11 @@
 # Import the Book model
-from your_app_name.models import Book
+from bookshelf.models import Book
 
 # Retrieve the Book instance you want to delete
 book = Book.objects.get(title="Nineteen Eighty-Four", author="George Orwell", publication_year=1949)
 
 # Delete the Book instance
-book.delete()
+book.delete() from bookshelf.models import Book
 
 # Confirm the deletion by attempting to retrieve all books
 all_books = Book.objects.all()
