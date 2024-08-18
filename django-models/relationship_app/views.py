@@ -1,22 +1,18 @@
-from django.views.generic import ListView, DetailView
-from .models import Book, Library  # Import Library here
+from django.shortcuts import render, get_object_or_404
+from .models import Book, Library
 
-class BookListView(ListView):
-    model = Book
-    template_name = 'relationship_app/list_books.html'
-    context_object_name = 'books'
+def book_list(request):
+    books = Book.objects.all()
+    return render(request, 'relationship_app/list_books.html', {'books': books})
 
-class LibraryListView(ListView):
-    model = Library
-    template_name = 'relationship_app/list_libraries.html'
-    context_object_name = 'libraries'
+def library_list(request):
+    libraries = Library.objects.all()
+    return render(request, 'relationship_app/list_libraries.html', {'libraries': libraries})
 
-class BookDetailView(DetailView):
-    model = Book
-    template_name = 'relationship_app/book_detail.html'
-    context_object_name = 'book'
+def book_detail(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    return render(request, 'relationship_app/book_detail.html', {'book': book})
 
-class LibraryDetailView(DetailView):
-    model = Library
-    template_name = 'relationship_app/library_detail.html'
-    context_object_name = 'library'
+def library_detail(request, pk):
+    library = get_object_or_404(Library, pk=pk)
+    return render(request, 'relationship_app/library_detail.html', {'library': library})
