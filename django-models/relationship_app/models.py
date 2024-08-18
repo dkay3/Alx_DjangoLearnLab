@@ -26,3 +26,11 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.name
+
+# New class Librarian with a library field
+class Librarian(models.Model):
+    name = models.CharField(max_length=100)
+    library = models.ForeignKey(Publisher, on_delete=models.CASCADE)  # Relating Librarian to Publisher
+
+    def __str__(self):
+        return self.name
