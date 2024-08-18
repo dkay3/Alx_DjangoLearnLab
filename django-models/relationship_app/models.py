@@ -13,7 +13,7 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-class Publisher(models.Model):
+class Library(models.Model):  # Renamed from Publisher to Library
     name = models.CharField(max_length=100)
     books = models.ManyToManyField(Book)  # ManyToMany relationship
 
@@ -27,10 +27,9 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.name
 
-# New class Librarian with a library field
 class Librarian(models.Model):
     name = models.CharField(max_length=100)
-    library = models.ForeignKey(Publisher, on_delete=models.CASCADE)  # Relating Librarian to Publisher
+    library = models.ForeignKey(Library, on_delete=models.CASCADE)  # ForeignKey to Library
 
     def __str__(self):
         return self.name
