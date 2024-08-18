@@ -64,3 +64,27 @@ def user_logout(request):
     return render(request, 'relationship_app/logout.html')
 
 
+# relationship_app/views.py
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
+from .models import UserProfile
+
+def user_role_check(role):
+    def check_user_role(user):
+        try:
+            return user.userprofile.role == role
+        except UserProfile.DoesNotExist:
+            return False
+    return check_user_role
+
+@user_passes_test(user_role_check('Admin'))
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html')
+
+@user_passes_test(user_role_check('Librarian'))
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian_view.html')
+
+@user_passes_test(user_role_check('Member'))
+def member_view(request):
+    return render(request, 'relationship_app/member_view.html')
