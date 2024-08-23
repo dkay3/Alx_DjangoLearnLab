@@ -18,7 +18,7 @@ class CustomUserChangeForm(UserChangeForm):
 from django import forms
 from .models import Book
 
-class BookForm(forms.ModelForm):
+class ExampleForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ['title', 'author', 'published_date']
@@ -35,7 +35,6 @@ class BookForm(forms.ModelForm):
             'author': 'Enter the author of the book.',
             'published_date': 'Enter the date when the book was published.',
         }
-
 
 # views.py
 from django.shortcuts import render, redirect
