@@ -53,3 +53,25 @@ class BookDeleteView(PermissionRequiredMixin, DeleteView):
     model = Book
     permission_required = 'bookshelf.can_delete'
     success_url = '/books/'
+
+
+# views.py
+from django.shortcuts import render
+from .models import Book
+
+def search_books(request):
+    query = request.GET.get('q', '')
+    if query:
+        books = Book.objects.filter(title__icontains=query)
+    else:
+        books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
+
+
+# views.py
+from django.http import HttpResponse
+
+def my_view(request):
+    response = HttpResponse("Hello, World!")
+    response['Content-Security-Policy'] = "default-src 'self'; script-src 'self' https://ajax.googleapis.com; style-src 'self' https://fonts.googleapis.com"
+    return response

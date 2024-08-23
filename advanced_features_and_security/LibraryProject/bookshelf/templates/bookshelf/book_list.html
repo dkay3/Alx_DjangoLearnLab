@@ -1,0 +1,23 @@
+<!-- list_books.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Books</title>
+</head>
+<body>
+    <h1>Books Available:</h1>
+    <ul>
+        {% for book in books %}
+        <li>{{ book.title }} by {{ book.author.name }}</li>
+        {% endfor %}
+    </ul>
+    <!-- template.html -->
+<form method="post" action="{% url 'your_view_name' %}">
+    {% csrf_token %}
+    <!-- form fields here -->
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
