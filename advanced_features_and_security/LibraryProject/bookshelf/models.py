@@ -82,4 +82,3 @@ class Book(models.Model):
 @permission_required('bookshelf.can_edit', raise_exception=True)
 def edit_book(request, book_id):
     # View that requires 'can_edit' permission
-    
