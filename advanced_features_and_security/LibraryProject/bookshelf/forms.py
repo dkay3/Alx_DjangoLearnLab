@@ -14,7 +14,7 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ('username', 'email', 'date_of_birth', 'profile_photo')
 
 
-# forms.py
+# bookshelf/forms.py
 from django import forms
 from .models import Book
 
@@ -22,6 +22,20 @@ class BookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ['title', 'author', 'published_date']
+        widgets = {
+            'published_date': forms.DateInput(attrs={'type': 'date'}),
+        }
+        labels = {
+            'title': 'Book Title',
+            'author': 'Author Name',
+            'published_date': 'Publication Date',
+        }
+        help_texts = {
+            'title': 'Enter the title of the book.',
+            'author': 'Enter the author of the book.',
+            'published_date': 'Enter the date when the book was published.',
+        }
+
 
 # views.py
 from django.shortcuts import render, redirect

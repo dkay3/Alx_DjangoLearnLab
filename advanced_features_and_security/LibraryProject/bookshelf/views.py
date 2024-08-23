@@ -55,17 +55,31 @@ class BookDeleteView(PermissionRequiredMixin, DeleteView):
     success_url = '/books/'
 
 
-# views.py
-from django.shortcuts import render
-from .models import Book
+# bookshelf/views.py
+from django.shortcuts import render, redirect
+from .forms import BookForm
 
-def search_books(request):
-    query = request.GET.get('q', '')
-    if query:
-        books = Book.objects.filter(title__icontains=query)
+def create_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('bookshelf:book_list')
     else:
-        books = Book.objects.all()
-    return render(request, 'bookshelf/book_list.html', {'books': books})
+        form = BookForm()
+    return render(request, 'bookshelf/create_book.html', {'form': form})
+
+def edit_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('bookshelf:book_list')
+    else:
+        form = BookForm(instance=book)
+    return render(request, 'bookshelf/edit_book.html', {'form': form})
+
 
 
 # views.py
