@@ -46,3 +46,40 @@ from django.conf import settings
 class ExampleModel(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     # other fields
+
+
+# bookshelf/models.py
+from django.db import models
+from django.contrib.auth.models import Permission
+from django.utils.translation import gettext_lazy as _
+
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.CharField(max_length=100)
+    published_date = models.DateField()
+
+    class Meta:
+        permissions = [
+            ("can_view", _("Can view book")),
+            ("can_create", _("Can create book")),
+            ("can_edit", _("Can edit book")),
+            ("can_delete", _("Can delete book")),
+        ]
+
+
+# bookshelf/models.py
+class Book(models.Model):
+    # Custom permissions for Book model
+    class Meta:
+        permissions = [
+            ("can_view", _("Can view book")),
+            ("can_create", _("Can create book")),
+            ("can_edit", _("Can edit book")),
+            ("can_delete", _("Can delete book")),
+        ]
+
+# bookshelf/views.py
+@permission_required('bookshelf.can_edit', raise_exception=True)
+def edit_book(request, book_id):
+    # View that requires 'can_edit' permission
+    
