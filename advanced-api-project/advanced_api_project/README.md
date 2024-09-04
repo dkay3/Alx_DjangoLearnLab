@@ -28,3 +28,22 @@
 
 - `List` and `Retrieve` views are accessible to all users.
 - `Create`, `Update`, and `Delete` views require authentication.
+
+
+
+## API Filtering, Searching, and Ordering
+
+### Filtering
+
+- **By Title:** `GET /api/books/?title=Book%20Title`
+- **By Author:** `GET /api/books/?author=Author%20Name`
+- **By Publication Year:** `GET /api/books/?publication_year=2023`
+
+### Searching
+
+- **Search Across Title and Author:** `GET /api/books/?search=SearchTerm`
+
+### Ordering
+
+- **Order by Title (ascending):** `GET /api/books/?ordering=title`
+- **Order by Publication Year (descending):** `GET /api/books/?ordering=-publication_year`

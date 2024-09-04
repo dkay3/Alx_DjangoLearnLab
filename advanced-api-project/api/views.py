@@ -60,3 +60,34 @@ class CustomBookUpdateView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+from rest_framework import generics
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from .models import Book
+from .serializers import BookSerializer
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+import django_filters
+
+class BookFilter(django_filters.FilterSet):
+    """Filter for the Book model."""
+    title = django_filters.CharFilter(lookup_expr='icontains')  # Filter by title using case-insensitive match
+    author = django_filters.CharFilter(field_name='author__name', lookup_expr='icontains')  # Filter by author's name
+    publication_year = django_filters.NumberFilter()  # Filter by publication year
+
+    class Meta:
+        model = Book
+        fields = ['title', 'author', 'publication_year']
+
+class BookListView(generics.ListAPIView):
+    """Retrieve a list of all books with filtering, searching, and ordering."""
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
+    filterset_class = BookFilter
+    search_fields = ['title', 'author__name']  # Enable searching on title and author's name
+    ordering_fields = ['title', 'publication_year']  # Allow ordering by title and publication year
+    ordering = ['title']  # Default ordering
+
