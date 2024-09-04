@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
 from rest_framework import status
@@ -16,9 +17,13 @@ class BookTests(APITestCase):
         )
         self.list_url = reverse('book-list')
         self.detail_url = reverse('book-detail', args=[self.book.id])
+        
+        # Create a user and authenticate
+        self.user = User.objects.create_user(username='testuser', password='password')
+        self.client.login(username='testuser', password='password')
 
-    def test_create_book(self):
-        """Test creating a new book"""
+    def test_create_book_authenticated(self):
+        """Test creating a new book with an authenticated user"""
         data = {
             'title': 'New Book Title',
             'publication_year': 2024,
@@ -28,6 +33,17 @@ class BookTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Book.objects.count(), 2)
         self.assertEqual(Book.objects.latest('id').title, 'New Book Title')
+
+    def test_create_book_unauthenticated(self):
+        """Test creating a new book with an unauthenticated user"""
+        self.client.logout()  # Ensure the user is logged out
+        data = {
+            'title': 'New Book Title',
+            'publication_year': 2024,
+            'author': self.author.id
+        }
+        response = self.client.post(self.list_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_read_book(self):
         """Test retrieving a book"""
