@@ -64,3 +64,18 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
+
+from django import forms
+from .models import Post, Tag
+from .widgets import TagWidget
+
+class PostForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        required=False,
+        widget=TagWidget()
+    )
+
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'tags']
