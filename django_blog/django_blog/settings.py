@@ -148,3 +148,6 @@ TEMPLATES = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# settings.py
+AUTH_USER_MODEL = 'blog.CustomUser'  # Replace 'yourapp' with your app name if using a custom user model
