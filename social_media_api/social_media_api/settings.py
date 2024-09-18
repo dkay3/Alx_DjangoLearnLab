@@ -155,3 +155,11 @@ DATABASES = {
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
+
+
+
+# Add this line to specify where to collect static files
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # You can change 'staticfiles' to any desired directory name
+
+# Other existing settings...
