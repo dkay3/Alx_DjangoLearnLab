@@ -66,12 +66,13 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from .models import Post, Like
 from notifications.models import Notification
+from django.shortcuts import get_object_or_404
 
 class LikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
+        post = get_object_or_404(Post, pk=pk)  # Use get_object_or_404
         like, created = Like.objects.get_or_create(user=request.user, post=post)
 
         if created:
@@ -90,7 +91,7 @@ class UnlikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
+        post = get_object_or_404(Post, pk=pk)  # Use get_object_or_404
         try:
             like = Like.objects.get(user=request.user, post=post)
             like.delete()
