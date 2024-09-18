@@ -34,3 +34,17 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+# posts/views.py
+from rest_framework import viewsets
+from .models import Post
+from .serializers import PostSerializer
+
+class FeedView(viewsets.ReadOnlyModelViewSet):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        followed_users = user.following.all()
+        return Post.objects.filter(author__in=followed_users).order_by('-created_at')
