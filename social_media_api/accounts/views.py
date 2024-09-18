@@ -16,15 +16,14 @@ class LoginView(ObtainAuthToken):
 
 
 # accounts/views.py
-from rest_framework import views, status
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class FollowUserView(views.APIView):
-    permission_classes = [IsAuthenticated]
+class FollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
         try:
@@ -34,8 +33,8 @@ class FollowUserView(views.APIView):
         except User.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
-class UnfollowUserView(views.APIView):
-    permission_classes = [IsAuthenticated]
+class UnfollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
         try:
@@ -44,3 +43,11 @@ class UnfollowUserView(views.APIView):
             return Response({'status': 'unfollowed'}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+class UserListView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        users = User.objects.all()  # Get all users
+        user_data = [{'id': user.id, 'username': user.username} for user in users]
+        return Response(user_data, status=status.HTTP_200_OK)
